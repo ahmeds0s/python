@@ -74,16 +74,18 @@ class animator:
 
     def read_from_arduino(self):
         print("reading......")
-        try:
-            if self.ser.in_waiting > 0:
-                line = self.ser.readline().decode('utf-8').rstrip()
-                self.readings.append(float(line))
+        self.readings = []
+        for _ in range(6):
+            try:
+                if self.ser.in_waiting > 0:
+                    line = self.ser.readline().decode('utf-8').rstrip()
+                    self.readings.append(float(line))
 
             # time.sleep(0.1)
             
-        except Exception as e:
-            print(e)
-            self.ser.close()
+            except Exception as e:
+                print(e)
+                self.ser.close()
     def is_ready(self):
         if len(self.readings) > 6:
             self.readings = self.readings[-(len(self.readings) % 6):]
