@@ -62,10 +62,10 @@ class animator:
 
 
     def start_animation(self):
-        self.fig = plt.figure()
+        self.fig, self.ax = plt.subplots()
         self.fig.canvas.mpl_connect("close_event", self.end_animation)
         self.anim = FuncAnimation(self.fig, self.animate, frames=50, interval=50)
-        ax_button = plt.axes([0.45, 0.05, 0.1, 0.075])
+        ax_button = plt.axes([1, 1, 1, 1])
         self.button = Button(ax_button, "Stop")
         self.button.on_clicked(self.button_event)
         plt.show()
