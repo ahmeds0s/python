@@ -8,7 +8,7 @@ import serial
 import time
 from os import environ
 
-com = "COM5"
+com = "COM3"
 
 
 environ["QT_DEVICE_PIXEL_RATIO"] = "0"
@@ -40,7 +40,7 @@ class animator:
         print("animate")
         print(self.readings)
         self.read_from_arduino()
-        if not self.is_ready():
+        if not self.is_ready() and self.start = False:
             return
         
         self.ax1.clear()
@@ -53,6 +53,7 @@ class animator:
 
 
     def start_animation(self, event):
+        self.start = True
         # start serial 
         self.start_serial()
         # clearing the start event 
@@ -122,6 +123,7 @@ class animator:
             return True
 
     def end_animation(self, event):
+        self.start = False
         try:
             self.ser.close()
         except Exception as e:
