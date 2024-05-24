@@ -21,7 +21,7 @@ img = image.imread("./foot.jpg")
 
 class animator:
     def __init__(self, img):
-        print("initialization....")
+        # print("initialization....")
         self.img = img
         self.ser = None
         self.sensors_locations = np.array([
@@ -32,13 +32,13 @@ class animator:
             (309, 700),
             (123, 857)
         ])
-        self.readings = []
+        self.readings = np.array([])
         self.fig = plt.figure()
         self.grid = gridspec(2, 3, height_ratios=[4, 1])
 
     def animate(self, i):
-        print("animate")
-        print(self.readings)
+        # print("animate")
+        # print(self.readings)
         self.read_from_arduino()
         if not self.is_ready() or not self.start:
             return
@@ -80,12 +80,12 @@ class animator:
         self.text_ax.axis('off')
 
         self.anim = FuncAnimation(
-            self.fig, self.animate, frames=100, interval=1)
+            self.fig, self.animate, frames=100, interval = 0.5)
         plt.draw()
         print("done")
 
     def read_from_arduino(self):
-        print("reading......")
+        # print("reading......")
         self.readings = []
         for _ in range(6):
             try:
@@ -100,16 +100,18 @@ class animator:
                 self.ser.close()
 
     def is_ready(self):
-        if len(self.readings) > 6:
-            self.readings = self.readings[-(len(self.readings) % 6):]
-            return False
-        elif len(self.readings) < 6:
-            return False
-        else:
+        # if len(self.readings) > 6:
+        #     self.readings = self.readings[-(len(self.readings) % 6):]
+        #     return False
+        # elif len(self.readings) < 6:
+        #     return False
+        if len(self.readings) == 6:
             return True
 
     def end_animation(self, event):
         self.start = False
+        self.anim.event_source.stop()
+        
         try:
             self.ser.close()
         except Exception as e:
@@ -131,7 +133,6 @@ class animator:
         plt.show()
 
     def start_serial(self):
-
         while True:
             try:
                 self.ser = serial.Serial(com, 9600, timeout=1)
@@ -145,7 +146,7 @@ class animator:
                     break
 
     def temp_animate(self, i):
-        print("animate")
+        # print("animate")
         self.ax1.clear()
         self.ax1.axis("off")
         self.ax1.imshow(img)
@@ -156,16 +157,13 @@ class animator:
         plt.draw()
 
     def calculate_center_of_pressure(self):
-
         if sum(self.readings) == 0:
-
             self.cop = np.array([0, 0])
             return
 
         sum_pressure = np.array([0, 0])
         
         for i in range(0, 2):
-
             for index, loc in enumerate(self.sensors_locations):
                 sum_pressure[i] += loc[i] * self.readings[index]
 
@@ -181,7 +179,7 @@ class animator:
         for r in self.readings:
             if r > 5:
                 self.text1.set_text("Over Pressure")
-                self.text1.set_text("blue")
+                self.text1.set_color("blue")
             
         if self.readings[5] > 2:
             if self.readings[4] > 2 and self.readings[3] > 2: 
