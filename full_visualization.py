@@ -40,7 +40,7 @@ class animator:
         print("animate")
         print(self.readings)
         self.read_from_arduino()
-        if not self.is_ready() and self.start = False:
+        if not self.is_ready() and not self.start:
             return
         
         self.ax1.clear()
@@ -48,7 +48,7 @@ class animator:
         self.ax1.imshow(img)
         grads = np.linspace(0, 1, 7)
         for i, loc in enumerate(self.sensors_locations):
-            self.ax1.scatter(loc[0] * np.ones(7), (loc[1] * np.ones(7)),alpha = (1 - grads), s = 2000 * grads * self.readings[i], cmap="Reds", c=(1 - grads) * 1000) 
+            self.ax1.scatter(loc[0] * np.ones(7), (loc[1] * np.ones(7)), alpha = (1 - grads), s = 2000 * grads * self.readings[i], cmap="Reds", c=(1 - grads) * 1000) 
         plt.draw()
 
 
