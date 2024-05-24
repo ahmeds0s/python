@@ -49,7 +49,7 @@ class animator:
         grads = np.linspace(0, 1, 7)
         if sum(self.readings) != 0:
             self.calculate_center_of_pressure()
-            self.ax1.scatter(self.cop[0], self.cop[1], c="r.")
+            self.ax1.scatter(self.cop[0], self.cop[1], color="red")
 
         for i, loc in enumerate(self.sensors_locations):
             self.ax1.scatter(loc[0] * np.ones(7), (loc[1] * np.ones(7)), alpha=(1 - grads), s=500 * grads * self.readings[i], cmap="Reds", c=(1 - grads) * 1000)
@@ -74,8 +74,8 @@ class animator:
         self.end_bt = Button(self.end_ax, "END")
         self.end_bt.on_clicked(self.button_event)
         self.text_ax = self.fig.add_subplot(self.grid[1, 1:])
-        self.text1 = self.text_ax.text(0.4, 0.5, "Text 1", fontsize=12)
-        self.text2 = self.text_ax.text(0.7, 0.5, "text 2", fontsize=12)
+        self.text1 = self.text_ax.text(0.4, 0.7, "Text 1", fontsize=12)
+        self.text2 = self.text_ax.text(0.4, 0.2, "text 2", fontsize=12)
 
         self.text_ax.axis('off')
 
@@ -163,6 +163,8 @@ class animator:
     def update_text(self):
         if self.readings[2] > 4:
             self.text1.set_text("Flat Foot")
+        else:
+            self.text1.set_text('')
         for r in self.readings:
             if r > 5:
                 self.text1.set_text("Over Pressure")
