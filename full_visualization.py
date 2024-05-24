@@ -34,28 +34,28 @@ class animator:
                 ])
         self.readings = []
         self.fig = plt.figure() 
-        self.grid = gridspec(2, 3)
+        self.grid = gridspec(2, 3, height_ratios=[4, 1])
 
     def animate(self, i):
         print("animate")
         print(self.readings)
         self.read_from_arduino()
-        if not self.is_ready() and not self.start:
+        if not self.is_ready() or not self.start:
             return
         
         self.ax1.clear()
         self.ax1.axis("off")
-        self.ax1.imshow(img)
+        self.ax1.imshow(img, aspect="equal")
         grads = np.linspace(0, 1, 7)
         for i, loc in enumerate(self.sensors_locations):
-            self.ax1.scatter(loc[0] * np.ones(7), (loc[1] * np.ones(7)), alpha = (1 - grads), s = 2000 * grads * self.readings[i], cmap="Reds", c=(1 - grads) * 1000) 
+            self.ax1.scatter(loc[0] * np.ones(7), (loc[1] * np.ones(7)), alpha = (1 - grads), s = 500 * grads * self.readings[i], cmap="Reds", c = (1 - grads) * 1000) 
         plt.draw()
 
 
     def start_animation(self, event):
         self.start = True
         # start serial 
-        self.start_serial()
+        # self.start_serial()
         # clearing the start event 
         self.bt.ax.remove()
         self.bt.disconnect_events()
@@ -72,24 +72,18 @@ class animator:
 
         self.end_bt = Button(self.end_ax, "END")
         self.end_bt.on_clicked(self.button_event)
-        self.text1_ax = self.fig.add_subplot(self.grid[1, 1])
-        self.text2_ax = self.fig.add_subplot(self.grid[1, 2])
+        self.text_ax = self.fig.add_subplot(self.grid[1, 1:])
+        self.text1 = self.text_ax.text(0.4, 0.5, "Text 1", fontsize=12)
+        self.text2 = self.text_ax.text(0.7, 0.5, "text 2", fontsize=12)
         
 
-        self.text2_ax.axis('off')
-        self.text1_ax.axis('off')
+        self.text_ax.axis('off')
 
         
 
-        self.text1_ax.text(0.1, 0.1, "text1",
-        fontsize=14, color='green', ha='right', va='top', 
-        bbox=dict(facecolor='red', alpha=0.5))
 
 
 
-        self.text2_ax.text(0.1, 0.1, "text2",
-        fontsize=14, color='red',  va='top', 
-        bbox=dict(facecolor='yellow', alpha=0.5))
       
 
 
@@ -154,10 +148,13 @@ class animator:
                     print("connected to  ", self.ser.portstr)
                     break
     def temp_animate(self, i):
+        print("animate")
         self.ax1.clear()
-        self.ax1.imshow(img)
         self.ax1.axis("off")
-        self.ax1.scatter(x, 100 * np.sin(x - i * 0.1))
+        self.ax1.imshow(img)
+        grads = np.linspace(0, 1, 7)
+        for i, loc in enumerate(self.sensors_locations):
+            self.ax1.scatter(loc[0] * np.ones(7), (loc[1] * np.ones(7)), alpha = (1 - grads), s = 2000 * grads * np.random.randint(0.5, 1), cmap="Reds", c=(1 - grads) * 1000) 
         plt.draw()
 
         
