@@ -116,7 +116,11 @@ class animator:
             print(e)
 
     def button_event(self, event):
-        print("button clicked")
+        print("button end clicked")
+        self.anim.event_source.stop()
+        self.fig.clear()
+        self.before_start()
+
 
     def before_start(self):
         self.start_button = self.fig.add_subplot(self.grid[:, :])
@@ -154,15 +158,19 @@ class animator:
     def calculate_center_of_pressure(self):
 
         if sum(self.readings) == 0:
+
             self.cop = np.array([0, 0])
             return
 
         sum_pressure = np.array([0, 0])
         
         for i in range(0, 2):
+
             for index, loc in enumerate(self.sensors_locations):
                 sum_pressure[i] += loc[i] * self.readings[index]
+
         self.cop = sum_pressure / np.sum(self.readings)
+
     def update_text(self):
         if self.readings[2] > 4:
             self.text1.set_text("Flat Foot")
