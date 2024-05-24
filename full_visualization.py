@@ -8,7 +8,7 @@ import serial
 import time
 from os import environ
 
-
+com = "COM5"
 
 
 environ["QT_DEVICE_PIXEL_RATIO"] = "0"
@@ -48,7 +48,7 @@ class animator:
         self.ax1.imshow(img)
         grads = np.linspace(0, 1, 7)
         for i, loc in enumerate(self.sensors_locations):
-            plt.scatter(loc[0] * np.ones(7), (loc[1] * np.ones(7)),alpha = (1 - grads), s = 2000 * grads * self.readings[i], cmap="Reds", c=(1 - grads) * 1000) 
+            self.ax1.scatter(loc[0] * np.ones(7), (loc[1] * np.ones(7)),alpha = (1 - grads), s = 2000 * grads * self.readings[i], cmap="Reds", c=(1 - grads) * 1000) 
         plt.draw()
 
 
@@ -93,7 +93,7 @@ class animator:
 
 
         
-        self.anim = FuncAnimation(self.fig, self.animate, frames=100, interval=50)
+        self.anim = FuncAnimation(self.fig, self.animate, frames=100, interval=1)
         plt.draw()
         print("done")
     
@@ -142,7 +142,7 @@ class animator:
      
         while True:
             try:
-                self.ser = serial.Serial("COM5", 9600, timeout=1) 
+                self.ser = serial.Serial(com, 9600, timeout=1) 
             except Exception as e:
                 print(e)
 
