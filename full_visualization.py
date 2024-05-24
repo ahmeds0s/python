@@ -163,11 +163,28 @@ class animator:
     def update_text(self):
         if self.readings[2] > 4:
             self.text1.set_text("Flat Foot")
+            self.text1.set_color("red")
         else:
             self.text1.set_text('')
+        
         for r in self.readings:
             if r > 5:
                 self.text1.set_text("Over Pressure")
+                self.text1.set_text("blue")
+            
+        if self.readings[5] > 2:
+            if self.readings[4] > 2 and self.readings[3] > 2: 
+                self.text2.set_text("mid stance") 
+            else:
+                self.text2.set_text("Initial contact") 
+        
+        if self.readings[0] > 2 and self.readings[1] > 2:
+            self.text2.set_text("Terminal Stance")
+        
+        if sum(self.readings) == 0:
+            self.text2.set_text("Display Swing")
+        
+        
         
 
 
