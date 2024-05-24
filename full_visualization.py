@@ -9,7 +9,7 @@ import time
 from os import environ
 
 com = "COM3"
-
+ 
 
 environ["QT_DEVICE_PIXEL_RATIO"] = "0"
 environ["QT_AUTO_SCREEN_SCALE_FACTOR "] = "1"
