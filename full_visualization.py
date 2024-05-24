@@ -42,17 +42,17 @@ class animator:
         self.read_from_arduino()
         if not self.is_ready() or not self.start:
             return
-
+        self.update_text()
         self.ax1.clear()
         self.ax1.axis("off")
         self.ax1.imshow(img, aspect="equal")
         grads = np.linspace(0, 1, 7)
-        self.calculate_center_of_pressure()
-        self.ax1.scatter(self.cop[0], self.cop[1], c="r.")
+        if sum(self.readings) != 0:
+            self.calculate_center_of_pressure()
+            self.ax1.scatter(self.cop[0], self.cop[1], c="r.")
 
         for i, loc in enumerate(self.sensors_locations):
-            self.ax1.scatter(loc[0] * np.ones(7), (loc[1] * np.ones(7)), alpha=(
-                1 - grads), s=500 * grads * self.readings[i], cmap="Reds", c=(1 - grads) * 1000)
+            self.ax1.scatter(loc[0] * np.ones(7), (loc[1] * np.ones(7)), alpha=(1 - grads), s=500 * grads * self.readings[i], cmap="Reds", c=(1 - grads) * 1000)
         plt.draw()
 
     def start_animation(self, event):
@@ -158,8 +158,15 @@ class animator:
         sum_pressure = np.array([0, 0])
         for i in range(0, 2):
             for index, loc in enumerate(self.sensors_locations):
-                sum_pressure[i] += loc[index][i] * self.readings[index]
+                sum_pressure[i] += loc[i] * self.readings[index]
         self.cop = sum_pressure / np.sum(self.readings)
+    def update_text(self):
+        if self.readings[2] > 4:
+            self.text1.set_text("Flat Foot")
+        for r in self.readings:
+            if r > 5:
+                self.text1.set_text("Over Pressure")
+        
 
 
 x = np.linspace(0, 100, 1000)
