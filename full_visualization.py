@@ -152,10 +152,13 @@ class animator:
         plt.draw()
 
     def calculate_center_of_pressure(self):
+
         if sum(self.readings) == 0:
             self.cop = np.array([0, 0])
             return
+
         sum_pressure = np.array([0, 0])
+        
         for i in range(0, 2):
             for index, loc in enumerate(self.sensors_locations):
                 sum_pressure[i] += loc[i] * self.readings[index]
@@ -182,7 +185,7 @@ class animator:
             self.text2.set_text("Terminal Stance")
         
         if sum(self.readings) == 0:
-            self.text2.set_text("Display Swing")
+            self.text2.set_text("Swing")
         
         
         
