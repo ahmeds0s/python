@@ -18,7 +18,7 @@ environ["QT_SCALE_FACTOR"] = "1"
 
 img = image.imread("./foot.jpg")
 
-
+# change
 class animator:
     def __init__(self, img):
         # print("initialization....")
