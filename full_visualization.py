@@ -8,6 +8,7 @@ import serial
 import time
 from os import environ
 
+
 com = "COM3"
  
 
